@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    dotenv (1.0.2)
+    retryable-rb (1.1.0)
+    rubypress (1.0.9)
+      retryable-rb
+    thor (0.19.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  dotenv
+  rubypress
+  thor
