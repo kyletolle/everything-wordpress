@@ -39,7 +39,10 @@ module Everything
 
       markdown_path = File.join post_dir, 'index.md'
       markdown_text = File.read markdown_path
-      blog_title = post_path.split('-').map(&:capitalize).join(' ')
+
+      partitioned_text = markdown_text.partition("\n\n")
+      blog_title = partitioned_text.first.sub("# ", '')
+      markdown_content = partitioned_text.last
 
       wp = Rubypress::Client.new(host: ENV['WORDPRESS_HOST'], username: ENV['WORDPRESS_USERNAME'], password: ENV['WORDPRESS_PASSWORD'])
 
@@ -49,11 +52,11 @@ module Everything
           post_date:    Time.now,
           post_title:   blog_title,
           post_name:    File.join('', post_path),
-          post_content: markdown_text,
+          post_content: markdown_content,
           post_author:  1,
           terms_names:
             {
-            category: [ 'writing', 'software', 'blog']
+            category: metadata['categories']
             }
       }
 
