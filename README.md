@@ -23,14 +23,20 @@ Be sure the WordPress blog has the `WP-Markdown` plugin installed, so it can
 render a Markdown post properly.
 
 Since this requires an `everything` repo, we expect that there's a directory
-for the post that has a name and an `index.md` and an `index.yaml` under it.
+for the post. The directory's name will be be the command line argument to
+this application.
 
-`index.md` is the post's content, written in Markdown.
-`index.yaml` is the post's metadata, written in YAML, which must have a
-`public` key with a value of `true` to indicate this post should be published.
+This directory must then also have an `index.md` and an `index.yaml` within it.
 
-The directory's name is what will be be the command line argument to this
-application, and serves as the blog post's title.
+- `index.md` is the post's content, written in Markdown.
+  - The first line must be the blog's title in the format: `# Blog Title Here`
+  - The second line must be empty
+  - The third line through the end is the content for the post.
+- `index.yaml` is the post's metadata, written in YAML
+  - In order to publish the post, it must have a `public` key with a value of `true`.
+  - You must also have a YAML sequence (array) of categories. There must be at
+    least one category.
+
 
 ## Publishing a Post
 
@@ -44,8 +50,6 @@ If all goes well, you'll see some text mentioning the blog post's ID.
 
 Right now, there are some limitations:
 
-- Categories for the post are hardcoded.
 - Publishing the same post a second time creates a duplicate blog post.
-- There's no updating a post once it's been published.
-- Titles are based on the post's path which is passed in, instead of the content itself.
+- There's no updating a post once it's been published. Yet.
 
