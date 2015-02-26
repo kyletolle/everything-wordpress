@@ -1,20 +1,18 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'dotenv'
-dotenv_path = File.join File.expand_path(File.dirname(__FILE__)), '../' , '.env'
-Dotenv.load dotenv_path
-
 require 'thor'
 require 'yaml'
 require 'rubypress'
+
+require_relative 'config'
 
 module Everything
   class Wordpress < Thor
     desc "publish POST_DIR", "publish the blog in the directory POST_DIR to Wordpress"
     def publish(post_dir)
 
-      Dir.chdir ENV['EVERYTHING_PATH']
+      Dir.chdir Config.everything_path
       glob_path = File.join '**', post_dir
       possible_dirs = Dir.glob glob_path
       full_post_dir = possible_dirs.first
@@ -45,7 +43,7 @@ module Everything
       blog_title = partitioned_text.first.sub("# ", '')
       markdown_content = partitioned_text.last
 
-      wp = Rubypress::Client.new(host: ENV['WORDPRESS_HOST'], username: ENV['WORDPRESS_USERNAME'], password: ENV['WORDPRESS_PASSWORD'])
+      wp = Rubypress::Client.new(host: Config.wordpress_host, username: Config.wordpress_username, password: Config.wordpress_password)
 
       content =
         {
@@ -61,7 +59,7 @@ module Everything
             }
       }
 
-      everything_wordpress_path = ENV['EVERYTHING_WORDPRESS_PATH']
+      everything_wordpress_path = Config.everything_wordpress_path
       post_metadata_path = File.join everything_wordpress_path, "#{post_dir}.yaml"
 
       if File.exist? post_metadata_path
