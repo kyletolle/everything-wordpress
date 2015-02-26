@@ -37,6 +37,14 @@ This directory must then also have an `index.md` and an `index.yaml` within it.
   - You must also have a YAML sequence (array) of categories. There must be at
     least one category.
 
+## Advanced
+
+You can append the `bin` directory to your PATH so you can use `ew` from
+anywhere.
+
+```
+export PATH=$PATH:/path/to/everything-wordpress/bin
+```
 
 ## Publishing a Post
 
