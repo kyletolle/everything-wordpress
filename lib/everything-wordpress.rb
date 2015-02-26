@@ -61,10 +61,38 @@ module Everything
             }
       }
 
-      status = wp.newPost(blog_id: 0, content: content)
+      everything_wordpress_path = ENV['EVERYTHING_WORDPRESS_PATH']
+      post_metadata_path = File.join everything_wordpress_path, "#{post_dir}.yaml"
 
-      puts "The post should have been successfully published and the ID is:"
-      puts status
+      if File.exist? post_metadata_path
+        post_metadata_yaml = YAML.load_file post_metadata_path
+        post_id = post_metadata_yaml['post_id']
+        status = wp.editPost(blog_id: 0, post_id: post_id, content: content)
+
+        post_metadata_yaml["updated_at"] = Time.now.to_i
+
+        File.open(post_metadata_path, 'w') do |f|
+          f.write post_metadata_yaml.to_yaml
+        end
+
+        puts "Successfully updated #{post_dir}"
+
+      else
+
+        status = wp.newPost(blog_id: 0, content: content)
+
+        post_metadata = {
+          "post_id" => status,
+          "created_at" => Time.now.to_i,
+          "updated_at" => Time.now.to_i
+        }
+
+        File.open(post_metadata_path, 'w') do |f|
+          f.write post_metadata.to_yaml
+        end
+
+        puts "Successfully published #{post_dir}"
+      end
     end
   end
 end
