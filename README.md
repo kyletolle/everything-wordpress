@@ -58,12 +58,14 @@ alias bew="BUNDLE_GEMFILE=/path/to/everything-wordpress/Gemfile bundle exec ew $
 ./ew publish <POST_PATH>
 ```
 
-If all goes well, you'll see some text mentioning the blog post's ID.
+If this post is new, you'll see some text that it was succesfully posted.
+If the post already exists, you'll see some text saying it was successfully
+updated.
 
 ## Notes
 
 Right now, there are some limitations:
 
-- Publishing the same post a second time creates a duplicate blog post.
-- There's no updating a post once it's been published. Yet.
+- Categories are still pulled from the `everything` repo instead of the
+  `everything-wordpress` repo like they should be.
 
