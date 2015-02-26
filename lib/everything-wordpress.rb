@@ -2,7 +2,8 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'dotenv'
-Dotenv.load
+dotenv_path = File.join File.expand_path(File.dirname(__FILE__)), '../' , '.env'
+Dotenv.load dotenv_path
 
 require 'thor'
 require 'yaml'
