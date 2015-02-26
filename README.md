@@ -15,6 +15,7 @@ There are four required environment variables. You can store them in a `.env`
 file, which will be automatically loaded when this application runs.
 
 - `EVERYTHING_PATH` - local path to your `everything` repo
+- `EVERYTHING_WORDPRESS_PATH` - local path to your `everything-wordpress` repo
 - `WORDPRESS_HOST` - URL of your WordPress blog, without a protocol
 - `WORDPRESS_USERNAME`
 - `WORDPRESS_PASSWORD`
@@ -37,13 +38,18 @@ This directory must then also have an `index.md` and an `index.yaml` within it.
   - You must also have a YAML sequence (array) of categories. There must be at
     least one category.
 
+We also require an `everything-wordpress` repo, for maintaining metadata about
+the posts when they get published. Right now, this is used to keep track of
+which posts you've published, so you can update them later.
+
 ## Advanced
 
-You can append the `bin` directory to your PATH so you can use `ew` from
-anywhere.
+To run the script from anywhere, we can modify the PATH to append the `bin`
+directory and create an alias so that Bundler is used correctly.
 
 ```
 export PATH=$PATH:/path/to/everything-wordpress/bin
+alias bew="BUNDLE_GEMFILE=/path/to/everything-wordpress/Gemfile bundle exec ew ${@:2}"
 ```
 
 ## Publishing a Post
