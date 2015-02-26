@@ -11,34 +11,34 @@ require 'rubypress'
 
 module Everything
   class Wordpress < Thor
-    desc "publish POSTPATH", "publish the blog named POST to Wordpress"
-    def publish(post_path)
+    desc "publish POST_DIR", "publish the blog in the directory POST_DIR to Wordpress"
+    def publish(post_dir)
 
       Dir.chdir ENV['EVERYTHING_PATH']
-      glob_path = File.join '**', post_path
+      glob_path = File.join '**', post_dir
       possible_dirs = Dir.glob glob_path
-      post_dir = possible_dirs.first
+      full_post_dir = possible_dirs.first
 
-      unless post_dir
-        puts "Couldn't find a directory for the post #{post_path}."
+      unless full_post_dir
+        puts "Couldn't find a directory for the post #{full_post_dir}."
         return
       end
 
-      unless File.directory? post_dir
-        puts "Expected a directory but #{post_path} wasn't a directory."
+      unless File.directory? full_post_dir
+        puts "Expected a directory but #{full_post_dir} wasn't a directory."
         return
       end
 
       # Find yaml file and make sure it's a public file.
-      yaml_path = File.join post_dir, 'index.yaml'
+      yaml_path = File.join full_post_dir, 'index.yaml'
       metadata = YAML.load_file yaml_path
       is_public_post = metadata['public']
       unless is_public_post
-        puts "Expected a public post, but #{post_path}'s metadata didn't declare it to be public."
+        puts "Expected a public post, but #{post_dir}'s metadata didn't declare it to be public."
         return
       end
 
-      markdown_path = File.join post_dir, 'index.md'
+      markdown_path = File.join full_post_dir, 'index.md'
       markdown_text = File.read markdown_path
 
       partitioned_text = markdown_text.partition("\n\n")
@@ -52,7 +52,7 @@ module Everything
           post_status:  "publish",
           post_date:    Time.now,
           post_title:   blog_title,
-          post_name:    File.join('', post_path),
+          post_name:    File.join('', post_dir),
           post_content: markdown_content,
           post_author:  1,
           terms_names:
