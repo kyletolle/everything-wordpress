@@ -39,8 +39,70 @@ module Everything
       end
     end
 
+    class Metadata
+      def initialize(full_path)
+        yaml_path = File.join full_path, 'index.yaml'
+        @metadata = YAML.load_file yaml_path
+      end
+
+      def [](value)
+        @metadata[value]
+      end
+    end
+
+    class Content
+      def initialize(full_path)
+        markdown_path  = File.join full_path, 'index.md'
+        @markdown_text = File.read markdown_path
+      end
+
+      def title
+        partitioned_text.first.sub('# ', '')
+      end
+
+      def body
+        partitioned_text.last
+      end
+
+      private
+
+      def partitioned_text
+        @partitioned_text ||= @markdown_text.partition("\n\n")
+      end
+    end
+
     def initialize(post_dir_name)
-      @directory = Directory.new(post_dir_name).full_path
+      @post_dir_name = post_dir_name
+      @directory     = Directory.new(@post_dir_name).full_path
+      @metadata      = Metadata.new(@directory)
+      @content       = Content.new(@directory)
+
+      unless public_post?
+        puts "Expected a public post, but #{post_dir_name}'s metadata didn't declare it to be public."
+        return
+      end
+    end
+
+    def name
+      File.join('', @post_dir_name)
+    end
+
+    def title
+      @content.title
+    end
+
+    def body
+      @content.body
+    end
+
+    def categories
+      @metadata['categories']
+    end
+
+    private
+
+    def public_post?
+      @metadata['public']
     end
   end
 
@@ -48,38 +110,19 @@ module Everything
     desc "publish POST_DIR", "publish the blog in the directory POST_DIR to Wordpress"
     def publish(post_dir)
 
-      full_post_path = Everything::Post::Directory.new(post_dir).full_path
-
-      # Find yaml file and make sure it's a public file.
-      yaml_path = File.join full_post_path, 'index.yaml'
-      metadata = YAML.load_file yaml_path
-      is_public_post = metadata['public']
-      unless is_public_post
-        puts "Expected a public post, but #{post_dir}'s metadata didn't declare it to be public."
-        return
-      end
-
-      markdown_path = File.join full_post_path, 'index.md'
-      markdown_text = File.read markdown_path
-
-      partitioned_text = markdown_text.partition("\n\n")
-      blog_title = partitioned_text.first.sub("# ", '')
-      markdown_content = partitioned_text.last
-
       wp = Rubypress::Client.new(host: Config.wordpress_host, username: Config.wordpress_username, password: Config.wordpress_password)
+
+      post = Everything::Post.new(post_dir)
 
       content =
         {
           post_status:  "publish",
           post_date:    Time.now,
-          post_title:   blog_title,
-          post_name:    File.join('', post_dir),
-          post_content: markdown_content,
+          post_title:   post.title,
+          post_name:    post.name,
+          post_content: post.body,
           post_author:  1,
-          terms_names:
-            {
-            category: metadata['categories']
-            }
+          terms_names:  { category: post.categories }
       }
 
       everything_wordpress_path = Config.everything_wordpress_path
