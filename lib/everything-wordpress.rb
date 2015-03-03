@@ -8,27 +8,50 @@ require 'rubypress'
 require_relative 'config'
 
 module Everything
+  class Post
+    class Directory
+      def initialize(post_dir_name)
+        @post_dir_name = post_dir_name
+      end
+
+      def full_path
+        glob_path      = File.join everything_path, '**', @post_dir_name
+        possible_dirs  = Dir.glob glob_path
+        full_post_path = possible_dirs.first
+
+        unless full_post_path
+          puts "Couldn't find a directory for the post #{@post_dir_name}."
+          return
+        end
+
+        unless File.directory? full_post_path
+          puts "Expected a directory but #{full_post_path} wasn't a directory."
+          return
+        end
+
+        full_post_path
+      end
+
+      private
+
+      def everything_path
+        Config.everything_path
+      end
+    end
+
+    def initialize(post_dir_name)
+      @directory = Directory.new(post_dir_name).full_path
+    end
+  end
+
   class Wordpress < Thor
     desc "publish POST_DIR", "publish the blog in the directory POST_DIR to Wordpress"
     def publish(post_dir)
 
-      Dir.chdir Config.everything_path
-      glob_path = File.join '**', post_dir
-      possible_dirs = Dir.glob glob_path
-      full_post_dir = possible_dirs.first
-
-      unless full_post_dir
-        puts "Couldn't find a directory for the post #{full_post_dir}."
-        return
-      end
-
-      unless File.directory? full_post_dir
-        puts "Expected a directory but #{full_post_dir} wasn't a directory."
-        return
-      end
+      full_post_path = Everything::Post::Directory.new(post_dir).full_path
 
       # Find yaml file and make sure it's a public file.
-      yaml_path = File.join full_post_dir, 'index.yaml'
+      yaml_path = File.join full_post_path, 'index.yaml'
       metadata = YAML.load_file yaml_path
       is_public_post = metadata['public']
       unless is_public_post
@@ -36,7 +59,7 @@ module Everything
         return
       end
 
-      markdown_path = File.join full_post_dir, 'index.md'
+      markdown_path = File.join full_post_path, 'index.md'
       markdown_text = File.read markdown_path
 
       partitioned_text = markdown_text.partition("\n\n")
