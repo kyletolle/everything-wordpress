@@ -117,7 +117,6 @@ module Everything
       content =
         {
           post_status:  "publish",
-          post_date:    Time.now,
           post_title:   post.title,
           post_name:    post.name,
           post_content: post.body,
