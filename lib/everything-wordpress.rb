@@ -1,11 +1,13 @@
 require 'rubygems'
 require 'bundler/setup'
 
+require 'dotenv'
+Dotenv.load
+
 require 'thor'
 require 'yaml'
 require 'rubypress'
-
-require_relative 'config'
+require 'fastenv'
 
 module Everything
   class Post
@@ -35,7 +37,7 @@ module Everything
       private
 
       def everything_path
-        Config.everything_path
+        Fastenv.everything_path
       end
     end
 
@@ -110,7 +112,7 @@ module Everything
     desc "publish POST_DIR", "publish the blog in the directory POST_DIR to Wordpress"
     def publish(post_dir)
 
-      wp = Rubypress::Client.new(host: Config.wordpress_host, username: Config.wordpress_username, password: Config.wordpress_password)
+      wp = Rubypress::Client.new(host: Fastenv.wordpress_host, username: Fastenv.wordpress_username, password: Fastenv.wordpress_password)
 
       post = Everything::Post.new(post_dir)
 
@@ -124,7 +126,7 @@ module Everything
           terms_names:  { category: post.categories }
       }
 
-      everything_wordpress_path = Config.everything_wordpress_path
+      everything_wordpress_path = Fastenv.everything_wordpress_path
       post_metadata_path = File.join everything_wordpress_path, "#{post_dir}.yaml"
 
       if File.exist? post_metadata_path
