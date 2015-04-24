@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     dotenv (1.0.2)
+    fastenv (0.0.2)
     retryable-rb (1.1.0)
     rubypress (1.0.9)
       retryable-rb
@@ -12,5 +13,6 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
+  fastenv
   rubypress
   thor
