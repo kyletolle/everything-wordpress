@@ -47,6 +47,8 @@ which posts you've published, so you can update them later.
 To run the script from anywhere, we can modify the PATH to append the `bin`
 directory and create an alias so that Bundler is used correctly.
 
+If you use `zsh`, you can add this to your `.zshrc`:
+
 ```
 export PATH=$PATH:/path/to/everything-wordpress/bin
 alias bew="BUNDLE_GEMFILE=/path/to/everything-wordpress/Gemfile bundle exec ew ${@:2}"
