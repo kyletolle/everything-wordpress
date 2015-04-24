@@ -71,3 +71,7 @@ Right now, there are some limitations:
 - Categories are still pulled from the `everything` repo instead of the
   `everything-wordpress` repo like they should be.
 
+## License
+
+MIT
+
