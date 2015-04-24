@@ -51,7 +51,7 @@ If you use `zsh`, you can add this to your `.zshrc`:
 
 ```
 export PATH=$PATH:/path/to/everything-wordpress/bin
-alias bew="BUNDLE_GEMFILE=/path/to/everything-wordpress/Gemfile bundle exec ew ${@:2}"
+alias ew="BUNDLE_GEMFILE=/path/to/everything-wordpress/Gemfile bundle exec ew ${@:2}"
 ```
 
 ## Publishing a Post
