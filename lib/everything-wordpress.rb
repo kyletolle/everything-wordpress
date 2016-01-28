@@ -81,8 +81,9 @@ module Everything
       @content       = Content.new(@directory)
 
       unless public_post?
-        puts "Expected a public post, but #{post_dir_name}'s metadata didn't declare it to be public."
-        return
+        message = "Expected a public post, but #{post_dir_name}'s metadata didn't declare it to be public."
+        puts message
+        raise message
       end
     end
 
