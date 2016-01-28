@@ -1,7 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    dotenv (1.0.2)
+    dotenv (2.1.0)
+    everything-core (0.0.7)
+      dotenv (~> 2.1)
+      fastenv (= 0.0.2)
+    everything-piece-find (0.7.0)
+      everything-core (~> 0.0.7)
     fastenv (0.0.2)
     retryable-rb (1.1.0)
     rubypress (1.0.9)
@@ -12,7 +17,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  dotenv
+  everything-core (~> 0.0.7)
+  everything-piece-find (~> 0.7.0)
   fastenv
   rubypress
   thor
+
+BUNDLED WITH
+   1.11.2
