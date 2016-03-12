@@ -5,7 +5,8 @@ require 'yaml'
 # require 'kramdown'
 #
 
-dotenv_path = File.join File.expand_path(File.dirname(__FILE__)), '../' , '.env'
+expanded_file_path = File.expand_path(File.dirname(__FILE__))
+dotenv_path = File.join(expanded_file_path, '../../' , '.env')
 Dotenv.load dotenv_path
 
 module Everything
