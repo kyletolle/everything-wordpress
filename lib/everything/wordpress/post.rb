@@ -43,7 +43,7 @@ module Everything
       end
 
       def legacy_metadata
-        @legacy_metadata ||= LegacyMetadata.new(name)
+        @legacy_metadata ||= Post::LegacyMetadata.new(name)
       end
 
       def new_params
