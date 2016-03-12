@@ -1,62 +1,35 @@
 module Everything
   module Wordpress
     class Publisher
-      attr_reader :post_dir
-      def initialize(post_dir)
-        @post_dir = post_dir
+      def initialize(post_name)
+        @client = Client.new
+        @post = Post.new(post_name)
       end
 
       def publish
-        post = Post.new(post_dir)
+        publish_metadata = LegacyMetadata.new(@post.name)
+        new_post_params = @post.new_params
 
-        #post_html = Kramdown::Document.new(post.body).to_html
+        if publish_metadata.file_exists?
+          publish_metadata.load_metadata
 
-        everything_wordpress_path = Fastenv.everything_wordpress_path
-        post_metadata_path = File.join everything_wordpress_path, "#{post_dir}.yaml"
+          edit_post_params = new_post_params
+            .merge(post_id: publish_metadata.post_id)
+          @client.editPost(edit_post_params)
 
-        if File.exist? post_metadata_path
-          post_metadata_yaml = YAML.load_file post_metadata_path
-          post_id = post_metadata_yaml['post_id']
-          status = wp.editPost(
-              blog_id: 0,
-              post_id: post_id,
-              content: post.content
-            )
+          publish_metadata.update_time
+          publish_metadata.save
 
-          post_metadata_yaml["updated_at"] = Time.now.to_i
-
-          File.open(post_metadata_path, 'w') do |f|
-            f.write post_metadata_yaml.to_yaml
-          end
-
-          puts "Successfully updated #{post_dir}"
+          puts "Successfully updated #{@post.name}"
 
         else
+          new_post_id = @client.newPost(new_post_params)
 
-          status = wp.newPost(blog_id: 0, content: content)
+          publish_metadata.create_metadata(new_post_id)
+          publish_metadata.save
 
-          post_metadata = {
-            "post_id" => status,
-            "created_at" => Time.now.to_i,
-            "updated_at" => Time.now.to_i
-          }
-
-          File.open(post_metadata_path, 'w') do |f|
-            f.write post_metadata.to_yaml
-          end
-
-          puts "Successfully published #{post_dir}"
+          puts "Successfully published #{@post.name}"
         end
-      end
-
-    private
-
-      def wp
-        @wp ||= Rubypress::Client.new(
-            host:     Fastenv.wordpress_host,
-            username: Fastenv.wordpress_username,
-            password: Fastenv.wordpress_password
-          )
       end
     end
   end
