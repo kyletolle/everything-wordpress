@@ -6,29 +6,22 @@ module Everything
         @post = Post.new(post_name)
       end
 
+      attr_reader :client, :post
+
       def publish
-        publish_metadata = LegacyMetadata.new(@post.name)
-        new_post_params = @post.new_params
+        if post.already_published?
+          client.editPost(post.publish_params)
 
-        if publish_metadata.file_exists?
-          publish_metadata.load_metadata
+          post.update_metadata
 
-          edit_post_params = new_post_params
-            .merge(post_id: publish_metadata.post_id)
-          @client.editPost(edit_post_params)
-
-          publish_metadata.update_time
-          publish_metadata.save
-
-          puts "Successfully updated #{@post.name}"
+          puts "Successfully updated #{post.name}"
 
         else
-          new_post_id = @client.newPost(new_post_params)
+          new_post_id = client.newPost(post.publish_params)
 
-          publish_metadata.create_metadata(new_post_id)
-          publish_metadata.save
+          post.update_metadata(new_post_id)
 
-          puts "Successfully published #{@post.name}"
+          puts "Successfully published #{post.name}"
         end
       end
     end
