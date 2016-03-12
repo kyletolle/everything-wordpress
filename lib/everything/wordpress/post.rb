@@ -35,6 +35,10 @@ module Everything
         legacy_metadata.save
       end
 
+      def metadata
+        @metadata ||= Metadata.new(@piece)
+      end
+
     private
 
       def ensure_piece_is_public!
