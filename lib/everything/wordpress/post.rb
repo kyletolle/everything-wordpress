@@ -35,14 +35,6 @@ module Everything
         legacy_metadata.save
       end
 
-      def metadata
-        @piece.metadata['wordpress']
-      end
-
-      def categories
-        metadata['categories']
-      end
-
     private
 
       def ensure_piece_is_public!
