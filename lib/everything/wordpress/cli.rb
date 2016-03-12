@@ -7,6 +7,11 @@ module Everything
       def publish(post_dir)
         Publisher.new(post_dir).publish
       end
+
+      desc "migrate_metadata", "migrate the legacy post metadata to the new post metadata"
+      def migrate_metadata
+        MetadataMigrator.new.migrate_to_new_metadata
+      end
     end
   end
 end
