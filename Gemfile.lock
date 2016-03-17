@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     dotenv (2.1.0)
-    everything-core (0.0.7)
+    everything-core (0.0.8)
       dotenv (~> 2.1)
       fastenv (= 0.0.2)
     everything-piece-find (0.7.0)
@@ -17,7 +17,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  everything-core (~> 0.0.7)
+  everything-core (~> 0.0.8)
   everything-piece-find (~> 0.7.0)
   fastenv
   rubypress
