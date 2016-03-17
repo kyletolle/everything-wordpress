@@ -5,24 +5,25 @@ module Everything
         def initialize(piece)
           @piece = piece
 
-          @piece.metadata.raw_yaml['wordpress'] ||= {}
+          @yaml = @piece.metadata.raw_yaml
+          @yaml['wordpress'] ||= {}
         end
 
         def already_published?
-          !wordpress_metadata['publish_events'].nil?
+          !@yaml['wordpress']['publish_events'].nil?
         end
 
         def publish_events
           @publish_events ||= begin
-            wordpress_metadata['publish_events'] ||= []
-            wordpress_metadata['publish_events']
+            @yaml['wordpress']['publish_events'] ||= []
+            @yaml['wordpress']['publish_events']
           end
         end
 
         def add_created_event(post_id)
           created_event = {
-            'post_id' => post_id,
             'event'   => 'created',
+            'post_id' => post_id,
             'at'      => Time.now.to_i
           }
 
@@ -32,12 +33,24 @@ module Everything
         def add_updated_event
           post_id = publish_events.first
           updated_event = {
-            'post_id' => post_id,
             'event'   => 'updated',
+            'post_id' => post_id,
             'at'      => Time.now.to_i
           }
 
           publish_events << updated_event
+        end
+
+        def old_categories_exist?
+          !@yaml['categories'].nil?
+        end
+
+        def delete_old_categories
+          @yaml.delete('categories')
+        end
+
+        def categories=(value)
+          @yaml['wordpress']['categories'] = value
         end
 
         def inspect
@@ -45,15 +58,8 @@ module Everything
         end
 
         def save
-          # TODO: Need a hook in everything-core to save metadata files back to
-          # disk.
-          raise NotImplementedError
-        end
-
-      private
-
-        def wordpress_metadata
-          @wordpress_metadata ||= @piece.metadata['wordpress']
+          @piece.raw_yaml = @yaml.to_yaml+"\n"
+          @piece.metadata.save
         end
       end
     end
