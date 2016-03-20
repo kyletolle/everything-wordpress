@@ -12,7 +12,6 @@ module Everything
         all_posts.each do |post|
           WordpressPost.new(post).save_as_piece
         end
-        puts
       end
     end
 
@@ -63,7 +62,7 @@ module Everything
           post_type sticky
         )
 
-        @wordpress_post.slice(unmodified_attributes)
+        @wordpress_post.slice(*unmodified_attributes)
       end
 
       def dates
@@ -71,7 +70,7 @@ module Everything
           post_date post_date_gmt post_modified post_modified_gmt
         )
 
-        @wordpress_post.slice(dates_attributes).tap do |h|
+        @wordpress_post.slice(*dates_attributes).tap do |h|
           h.each do |key, date|
             h[key] = date.to_time.to_i
           end
