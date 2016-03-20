@@ -16,7 +16,5 @@ end
 
 require_relative 'wordpress/client'
 require_relative 'wordpress/post'
-require_relative 'wordpress/post/metadata'
-require_relative 'wordpress/post/legacy_metadata'
 require_relative 'wordpress/publisher'
 require_relative 'wordpress/metadata_migrator'

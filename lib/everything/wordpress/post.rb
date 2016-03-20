@@ -1,4 +1,6 @@
 require 'forwardable'
+require_relative 'post/metadata'
+require_relative 'post/legacy_metadata'
 
 module Everything
   module Wordpress
