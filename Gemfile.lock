@@ -1,6 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (4.2.6)
+      i18n (~> 0.7)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
+      tzinfo (~> 1.1)
     dotenv (2.1.0)
     everything-core (0.0.8)
       dotenv (~> 2.1)
@@ -8,15 +14,22 @@ GEM
     everything-piece-find (0.7.0)
       everything-core (~> 0.0.7)
     fastenv (0.0.2)
+    i18n (0.7.0)
+    json (1.8.3)
+    minitest (5.8.4)
     retryable-rb (1.1.0)
     rubypress (1.0.9)
       retryable-rb
     thor (0.19.1)
+    thread_safe (0.3.5)
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (~> 4.2.6)
   everything-core (~> 0.0.8)
   everything-piece-find (~> 0.7.0)
   fastenv
