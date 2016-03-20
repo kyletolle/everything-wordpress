@@ -85,11 +85,15 @@ module Everything
 
       def to_content
         <<MD
-# #{@wordpress_post['post_title']}
+#{markdown_title}
 
 #{@wordpress_post['post_content']}
 
 MD
+      end
+
+      def markdown_title
+        "# #{@wordpress_post['post_title']}"
       end
     end
   end
