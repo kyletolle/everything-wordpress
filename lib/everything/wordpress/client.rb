@@ -1,3 +1,5 @@
+require_relative 'client/pager'
+
 module Everything
   module Wordpress
     class Client
@@ -15,6 +17,10 @@ module Everything
 
       def edit_post(params)
         @wp.editPost(params)
+      end
+
+      def get_posts
+        Pager.new(@wp).fetch_all_posts
       end
     end
   end
