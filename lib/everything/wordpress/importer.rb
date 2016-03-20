@@ -87,13 +87,25 @@ module Everything
         <<MD
 #{markdown_title}
 
-#{@wordpress_post['post_content']}
+#{markdown_body}
 
 MD
       end
 
       def markdown_title
         "# #{@wordpress_post['post_title']}"
+      end
+
+      def markdown_body
+        post_content = @wordpress_post['post_content']
+
+        if post_content.match(/<p>/)
+          Kramdown::Document
+            .new(@wordpress_post['post_content'], input: 'html')
+            .to_kramdown
+        else
+          post_content
+        end
       end
     end
   end
