@@ -53,7 +53,7 @@ module Everything
 
       private
         def metadata_dir
-          Fastenv.everything_wordpress_path
+          Fastenv.everything_wordpress_metadata_path
         end
 
         def metadata_file_path
