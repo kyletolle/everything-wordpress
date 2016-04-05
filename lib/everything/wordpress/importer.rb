@@ -62,10 +62,10 @@ module Everything
 
       def merged_metadata
         unmodified_data
-          .merge(published)
-          .merge(publish_events)
           .merge(dates)
           .merge(categories)
+          .merge(published)
+          .merge(publish_events)
       end
 
       def published_post?
