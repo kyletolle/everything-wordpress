@@ -17,6 +17,11 @@ module Everything
       def import
         Importer.new.save_posts_from_wordpress
       end
+
+      desc 'consolidate_existing', 'consolidate blog posts that currently exist in everything to a single blog folder'
+      def consolidate_existing
+        ExistingPosts.new.consolidate
+      end
     end
   end
 end
