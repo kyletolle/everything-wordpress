@@ -55,17 +55,27 @@ module Everything
 
       def to_metadata
         {
-          'public'    => public_piece?,
+          'public'    => published_post?,
           'wordpress' => merged_metadata
         }.to_yaml
       end
 
       def merged_metadata
-        unmodified_data.merge(dates).merge(categories).merge(publish_events)
+        unmodified_data
+          .merge(published)
+          .merge(publish_events)
+          .merge(dates)
+          .merge(categories)
       end
 
-      def public_piece?
+      def published_post?
         @wordpress_post['post_status'] == 'publish'
+      end
+
+      def published
+        {
+          'published' => published_post?
+        }
       end
 
       def unmodified_data
