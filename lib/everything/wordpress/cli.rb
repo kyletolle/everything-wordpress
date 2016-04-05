@@ -15,7 +15,7 @@ module Everything
 
       desc 'import', 'import all the blogs in wordpress to everything'
       def import
-        Importer.new.get_posts
+        Importer.new.save_posts_from_wordpress
       end
     end
   end

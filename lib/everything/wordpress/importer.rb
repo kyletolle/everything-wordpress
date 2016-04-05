@@ -4,13 +4,23 @@ require 'active_support/core_ext/string/inflections'
 module Everything
   module Wordpress
     class Importer
-      def get_posts
-        client = Client.new
-
-        all_posts = client.get_posts
-
+      def each_post(&block)
         all_posts.each do |post|
+          yield post
+        end
+      end
+
+      def save_posts_from_wordpress
+        each_post do |post|
           WordpressPost.new(post).save_as_piece
+        end
+      end
+
+    private
+
+      def all_posts
+        @all_posts ||= begin
+          Client.new.get_posts
         end
       end
     end
