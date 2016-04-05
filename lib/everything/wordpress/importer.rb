@@ -56,8 +56,12 @@ module Everything
       def to_metadata
         {
           'public'    => public_piece?,
-          'wordpress' => unmodified_data.merge(dates).merge(categories)
+          'wordpress' => merged_metadata
         }.to_yaml
+      end
+
+      def merged_metadata
+        unmodified_data.merge(dates).merge(categories).merge(publish_events)
       end
 
       def public_piece?
@@ -90,6 +94,38 @@ module Everything
       def categories
         {
           'categories' => @wordpress_post['terms'].map{ |term| term['name'] }
+        }
+      end
+
+      def publish_events
+        return {} if @wordpress_post['post_date_gmt'].nil?
+
+        new_publish_events = []
+
+        post_id = @wordpress_post['post_id']
+
+        created_time = @wordpress_post['post_date_gmt'].to_time.to_i
+        updated_time = @wordpress_post['post_modified_gmt'].to_time.to_i
+
+        created_event = {
+          'event'   => 'created',
+          'post_id' => post_id,
+          'at'      => created_time
+        }
+        new_publish_events << created_event
+
+        unless created_time == updated_time
+          updated_event = {
+            'event'   => 'updated',
+            'post_id' => post_id,
+            'at'      => updated_time
+          }
+
+          new_publish_events << updated_event
+        end
+
+        {
+          'publish_events' => new_publish_events
         }
       end
 
