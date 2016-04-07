@@ -26,6 +26,8 @@ module Everything
     end
 
     class WordpressPost
+      @@unknown_piece_count = 0
+
       def initialize(wordpress_post)
         @wordpress_post = wordpress_post
       end
@@ -41,15 +43,18 @@ module Everything
     private
 
       def piece_path
-        File.join Everything.path, 'blog_import', piece_name
+        @piece_path ||= File.join Everything.path, 'blog_import', piece_name
       end
 
       def piece_name
         post_name = @wordpress_post['post_name']
+        post_title = @wordpress_post['post_title']
         if post_name && post_name != ''
           post_name
+        elsif post_title && post_title != ''
+          post_title.parameterize
         else
-          @wordpress_post['post_title'].parameterize
+          "unknown-#{@@unknown_piece_count += 1}"
         end
       end
 
