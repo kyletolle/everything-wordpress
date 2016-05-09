@@ -13,8 +13,8 @@ module Everything
         MetadataMigrator.new.migrate_to_new_metadata
       end
 
-      desc 'import', 'import all the blogs in wordpress to everything'
-      def import
+      desc 'import_posts', 'import all the blogs in wordpress to everything'
+      def import_posts
         Importer.new.save_posts_from_wordpress
       end
 
