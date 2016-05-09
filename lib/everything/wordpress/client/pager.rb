@@ -10,7 +10,7 @@ module Everything
           all_posts = []
           offset = 0
           loop do
-            current_posts = @wp.getPosts(filter: { offset: offset })
+            current_posts = @wp.getPosts(filter: { number: 200, offset: offset })
             break if current_posts.empty?
             all_posts.concat current_posts
             offset += current_posts.count
