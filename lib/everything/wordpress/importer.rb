@@ -1,4 +1,5 @@
 require_relative './imported_post'
+require_relative './imported_media'
 
 module Everything
   module Wordpress
@@ -15,11 +16,29 @@ module Everything
         end
       end
 
+      def each_media(&block)
+        all_media.each do |media|
+          yield media
+        end
+      end
+
+      def save_media_from_wordpress
+        each_media do |media|
+          ImportedMedia.new(media).save_as_media
+        end
+      end
+
     private
 
       def all_posts
         @all_posts ||= begin
           Client.new.get_posts
+        end
+      end
+
+      def all_media
+        @all_media ||= begin
+          Client.new.get_media
         end
       end
     end

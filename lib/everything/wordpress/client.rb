@@ -22,6 +22,10 @@ module Everything
       def get_posts
         Pager.new(@wp).fetch_all_posts
       end
+
+      def get_media
+        Pager.new(@wp).fetch_all_media
+      end
     end
   end
 end

@@ -18,6 +18,11 @@ module Everything
         Importer.new.save_posts_from_wordpress
       end
 
+      desc 'import_media', 'import all the media in wordpress to everything'
+      def import_media
+        Importer.new.save_media_from_wordpress
+      end
+
       desc 'consolidate_existing', 'consolidate blog posts that currently exist in everything to a single blog folder'
       def consolidate_existing
         ExistingPosts.new.consolidate
