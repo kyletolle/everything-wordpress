@@ -1,3 +1,8 @@
+#TODO: Go through all the old pieces and add a category for the folder they were
+#in, if that feels like it'd help categorize them a bit more!
+#
+# TODO: Can I also download and save all the comments written on these posts?
+#
 require_relative './imported_post'
 require_relative './imported_media'
 

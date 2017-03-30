@@ -2,6 +2,9 @@ require 'forwardable'
 require_relative 'post/metadata'
 require_relative 'post/legacy_metadata'
 
+# TODO: This class will need to be upgraded to match the new wordpress metadata
+# format.
+
 module Everything
   module Wordpress
     class Post
