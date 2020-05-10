@@ -33,7 +33,7 @@ module Everything
       end
 
       def media_dir
-        @media_dir ||= File.join Everything.path, 'blog', 'media'
+        @media_dir ||= File.join Everything.path, 'europe_blog_import', 'media'
       end
 
       def media_name
@@ -45,7 +45,7 @@ module Everything
       end
 
       def wordpress_base_uploads_url
-        'http://blog.kyletolle.com/wp-content/uploads/'
+        'http://kyleandchuckgotoeurope.com/wp-content/uploads/'
       end
 
       def download_media
@@ -64,7 +64,7 @@ module Everything
         ]
 
         metadata = @wordpress_media['metadata']
-        if metadata
+        if metadata && metadata != ""
           relative_image_path = metadata['file']
           urls_to_download << File
             .join(wordpress_base_uploads_url, relative_image_path)

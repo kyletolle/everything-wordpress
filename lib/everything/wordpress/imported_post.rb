@@ -21,7 +21,7 @@ module Everything
     private
 
       def piece_path
-        @piece_path ||= File.join Everything.path, 'blog_import', piece_name
+        @piece_path ||= File.join Everything.path, 'europe_blog_import', piece_name
       end
 
       def piece_name
