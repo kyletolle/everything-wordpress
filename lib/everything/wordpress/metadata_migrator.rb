@@ -2,7 +2,7 @@ module Everything
   module Wordpress
     class MetadataMigrator
       def initialize
-        @legacy_metadata_path = '/Users/kyle/Dropbox/everything-wordpress'
+        @legacy_metadata_path = '/Users/kyle/Dropbox/everything-wordpress_metadata'
       end
 
       def migrate_to_new_metadata

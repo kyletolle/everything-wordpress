@@ -12,6 +12,21 @@ module Everything
       def migrate_metadata
         MetadataMigrator.new.migrate_to_new_metadata
       end
+
+      desc 'import_posts', 'import all the blogs in wordpress to everything'
+      def import_posts
+        Importer.new.save_posts_from_wordpress
+      end
+
+      desc 'import_media', 'import all the media in wordpress to everything'
+      def import_media
+        Importer.new.save_media_from_wordpress
+      end
+
+      desc 'consolidate_existing', 'consolidate blog posts that currently exist in everything to a single blog folder'
+      def consolidate_existing
+        ExistingPosts.new.consolidate
+      end
     end
   end
 end
